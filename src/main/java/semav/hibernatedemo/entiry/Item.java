@@ -1,7 +1,9 @@
 package semav.hibernatedemo.entiry;
 
+import lombok.AccessLevel;
 import lombok.Data;
 import lombok.experimental.Accessors;
+import lombok.experimental.FieldDefaults;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,10 +16,11 @@ import java.time.LocalDate;
 @Entity
 @Data
 @Accessors(chain = true)
+@FieldDefaults(level= AccessLevel.PRIVATE)
 public class Item {
     @Id
     @GeneratedValue
-    private Long id;
+    Long id;
 
     @NotNull
     @Size(
@@ -25,8 +28,8 @@ public class Item {
             max = 255,
             message = "Name is required, maximum 255 characters."
     )
-    private String name;
+    String name;
 
     @Future
-    private LocalDate auctionEnd;
+    LocalDate auctionEnd;
 }

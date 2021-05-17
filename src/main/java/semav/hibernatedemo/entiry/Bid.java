@@ -8,15 +8,19 @@ import lombok.experimental.FieldDefaults;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import java.math.BigDecimal;
+import java.time.LocalDate;
 
 @Entity
+@org.hibernate.annotations.Immutable
 @Data
 @Accessors(chain = true)
 @FieldDefaults(level= AccessLevel.PRIVATE)
-public class Message {
+public class Bid {
     @Id
     @GeneratedValue
     Long id;
 
-    String text;
+    BigDecimal amount;
+    LocalDate createdOn;
 }
