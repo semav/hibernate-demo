@@ -15,7 +15,7 @@ import java.time.LocalDate;
 @org.hibernate.annotations.Immutable
 @Data
 @Accessors(chain = true)
-@FieldDefaults(level= AccessLevel.PRIVATE)
+@FieldDefaults(level=AccessLevel.PRIVATE)
 public class Bid {
     @Id
     @GeneratedValue
