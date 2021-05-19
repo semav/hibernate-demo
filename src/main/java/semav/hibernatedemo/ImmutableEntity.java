@@ -5,6 +5,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import semav.hibernatedemo.entiry.Bid;
+import semav.hibernatedemo.enums.AuctionType;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
@@ -30,6 +31,7 @@ public class ImmutableEntity {
 		EntityTransaction transaction = entityManager.getTransaction();
 		Bid bid = new Bid()
 				.setAmount(BigDecimal.TEN)
+				.setAuctionType(AuctionType.FIXED_PRICE)
 				.setCreatedOn(LocalDate.now());
 
 		transaction.begin();

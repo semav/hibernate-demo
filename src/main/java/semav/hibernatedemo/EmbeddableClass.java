@@ -4,21 +4,18 @@ import org.hibernate.SessionFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
-import semav.hibernatedemo.entiry.Message;
+import semav.hibernatedemo.entiry.Address;
+import semav.hibernatedemo.entiry.User;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Path;
-import javax.persistence.criteria.Root;
 import java.util.List;
 
 @SpringBootApplication
-public class CriteriaQuerying {
+public class EmbeddableClass {
 
 	public static void main(String[] args) {
-		ApplicationContext applicationContext = SpringApplication.run(CriteriaQuerying.class, args);
+		ApplicationContext applicationContext = SpringApplication.run(EmbeddableClass.class, args);
 		SessionFactory sessionFactory = applicationContext.getBean(SessionFactory.class);
 
 		store(sessionFactory);
@@ -30,13 +27,13 @@ public class CriteriaQuerying {
 	private static void store(SessionFactory sessionFactory) {
 		EntityManager entityManager = sessionFactory.createEntityManager();
 		EntityTransaction transaction = entityManager.getTransaction();
+		User user = new User().setHomeAddress(new Address()
+				.setCity("New York")
+				.setStreet("Wall street")
+				.setZipCode("1234567"));
 
 		transaction.begin();
-
-		for (int i = 0; i < 10; i++) {
-			Message message = new Message().setText("some text " + i);
-			entityManager.persist(message);
-		}
+		entityManager.persist(user);
 
 		transaction.commit();
 		entityManager.close();
@@ -44,16 +41,15 @@ public class CriteriaQuerying {
 
 	private static void load(SessionFactory sessionFactory) {
 		EntityManager entityManager = sessionFactory.createEntityManager();
-		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-		CriteriaQuery<Message> query = criteriaBuilder.createQuery(Message.class);
-		Root<Message> fromMessage = query.from(Message.class);
-		Path<Long> idPath = fromMessage.get("id");
+		EntityTransaction transaction = entityManager.getTransaction();
 
-		query.select(fromMessage);
-		query.where(criteriaBuilder.greaterThan(idPath,5L));
-		List<Message> messages = entityManager.createQuery(query).getResultList();
-		messages.forEach(System.out::println);
+		transaction.begin();
 
+		List<User> users = entityManager.createQuery("select u from User u", User.class).getResultList();
+		User user = users.get(0);
+		System.out.println(user);
+
+		transaction.commit();
 		entityManager.close();
 	}
 }
