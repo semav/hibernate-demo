@@ -4,14 +4,16 @@ import lombok.AccessLevel;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import lombok.experimental.FieldDefaults;
+import org.hibernate.annotations.CollectionId;
+import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.Future;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collection;
 
 @Entity
 @Data
@@ -32,4 +34,13 @@ public class Item {
 
     @Future
     LocalDate auctionEnd;
+
+    @GenericGenerator(name="ItemGenerator", strategy="sequence")
+    @ElementCollection
+    @CollectionTable(name = "IMAGE")
+    @CollectionId(
+            columns = @Column(name = "IMAGE_ID"),
+            type = @org.hibernate.annotations.Type(type = "long"),
+            generator = "myGenerator")
+    Collection<Image> images = new ArrayList<>();
 }
