@@ -13,7 +13,7 @@ import javax.validation.constraints.NotNull;
 @FieldDefaults(level= AccessLevel.PRIVATE)
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-abstract class BillingDetails {
+public abstract class BillingDetails {
     @Id
     @GeneratedValue
     Long id;

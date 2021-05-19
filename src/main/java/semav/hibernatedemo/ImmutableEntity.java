@@ -47,23 +47,21 @@ public class ImmutableEntity {
 		EntityTransaction transaction = entityManager.getTransaction();
 
 		transaction.begin();
+
 		Bid bid = entityManager.find(Bid.class, id);
 		bid.setAmount(BigDecimal.ONE);
 		entityManager.persist(bid);
-		transaction.commit();
-		// Hibernate never modifies Bid instance
 
+		// Hibernate never modifies Bid instance
+		transaction.commit();
 		entityManager.close();
 	}
 
 	private static void checkBid(SessionFactory sessionFactory, Long id) {
 		EntityManager entityManager = sessionFactory.createEntityManager();
-		EntityTransaction transaction = entityManager.getTransaction();
 
-		transaction.begin();
 		Bid bid = entityManager.find(Bid.class, id);
 		System.out.println(bid);
-		transaction.commit();
 
 		entityManager.close();
 	}

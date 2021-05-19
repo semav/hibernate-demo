@@ -5,6 +5,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import semav.hibernatedemo.entiry.CreditCard;
+import semav.hibernatedemo.util.RandomEntity;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
@@ -25,13 +26,10 @@ public class Inheritance {
 	private static Long store(SessionFactory sessionFactory) {
 		EntityManager entityManager = sessionFactory.createEntityManager();
 		EntityTransaction transaction = entityManager.getTransaction();
-		CreditCard creditCard = (CreditCard) new CreditCard()
-				.setCardNumber("123213123")
-				.setExpMonth("04")
-				.setExpYear("2020")
-				.setOwner("Owner");
+		CreditCard creditCard = RandomEntity.getCreditCard();
 
 		transaction.begin();
+
 		entityManager.persist(creditCard);
 
 		transaction.commit();

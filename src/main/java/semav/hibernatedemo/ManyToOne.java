@@ -4,46 +4,48 @@ import org.hibernate.SessionFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
-import semav.hibernatedemo.entiry.Message;
+import semav.hibernatedemo.entiry.BillingDetails;
+import semav.hibernatedemo.entiry.User;
+import semav.hibernatedemo.util.RandomEntity;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
-import java.util.List;
 
 @SpringBootApplication
-public class StoringAndLoading {
+public class ManyToOne {
 
 	public static void main(String[] args) {
-		ApplicationContext applicationContext = SpringApplication.run(StoringAndLoading.class, args);
+		ApplicationContext applicationContext = SpringApplication.run(ManyToOne.class, args);
 		SessionFactory sessionFactory = applicationContext.getBean(SessionFactory.class);
 
-		store(sessionFactory);
-		load(sessionFactory);
+		Long id = store(sessionFactory);
+		load(sessionFactory, id);
 
 		sessionFactory.close();
 	}
 
-	private static void store(SessionFactory sessionFactory) {
+	private static Long store(SessionFactory sessionFactory) {
 		EntityManager entityManager = sessionFactory.createEntityManager();
 		EntityTransaction transaction = entityManager.getTransaction();
-		Message message = new Message().setText("some text");
+		BillingDetails creditCard = RandomEntity.getCreditCard();
+		User user = new User().setBillingDetails(creditCard);
 
 		transaction.begin();
 
-		entityManager.persist(message);
+		entityManager.persist(creditCard);
+		entityManager.persist(user);
 
 		transaction.commit();
 		entityManager.close();
+
+		return user.getId();
 	}
 
-	private static void load(SessionFactory sessionFactory) {
+	private static void load(SessionFactory sessionFactory, Long id) {
 		EntityManager entityManager = sessionFactory.createEntityManager();
 
-		List<Message> messages = entityManager.createQuery("select m from Message m", Message.class).getResultList();
-		Message message = messages.get(0);
-		System.out.println(message);
-
-		message.setText("Take me to your leader!");
+		User user = entityManager.find(User.class, id);
+		System.out.println(user);
 
 		entityManager.close();
 	}

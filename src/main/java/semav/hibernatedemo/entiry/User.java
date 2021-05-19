@@ -5,10 +5,7 @@ import lombok.Data;
 import lombok.experimental.Accessors;
 import lombok.experimental.FieldDefaults;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "USERS")
@@ -24,4 +21,7 @@ public class User {
     // Otherwise you have to use @AttributeOverrides for all columns.
     Address homeAddress;
     Address billingAddress;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    BillingDetails billingDetails;
 }
