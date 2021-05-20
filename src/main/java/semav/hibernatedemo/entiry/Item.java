@@ -14,6 +14,7 @@ import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Data
@@ -35,12 +36,16 @@ public class Item {
     @Future
     LocalDate auctionEnd;
 
-    @GenericGenerator(name="ItemGenerator", strategy="sequence")
+    @GenericGenerator(name="itemGenerator", strategy="sequence")
     @ElementCollection
     @CollectionTable(name = "IMAGE")
     @CollectionId(
             columns = @Column(name = "IMAGE_ID"),
             type = @org.hibernate.annotations.Type(type = "long"),
-            generator = "myGenerator")
+            generator = "itemGenerator")
     Collection<Image> images = new ArrayList<>();
+
+    // CascadeType.PERSIST is used to avoid persisting of each bid
+    @OneToMany(mappedBy = "item", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    List<Bid> bids = new ArrayList<>();
 }

@@ -1,11 +1,9 @@
 package semav.hibernatedemo.util;
 
 import lombok.experimental.UtilityClass;
-import semav.hibernatedemo.entiry.Address;
-import semav.hibernatedemo.entiry.CreditCard;
-import semav.hibernatedemo.entiry.Image;
-import semav.hibernatedemo.entiry.Item;
+import semav.hibernatedemo.entiry.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Collections;
 
@@ -27,10 +25,17 @@ public class RandomEntity {
     }
 
     public static Item getItem() {
-        return new Item()
+       return new Item()
                 .setName("Item")
                 .setAuctionEnd(LocalDate.now().plusDays(1))
                 .setImages(Collections.singletonList(new Image()
                         .setFileName("filename.png")));
+    }
+
+    public static Bid getBid(Item item) {
+        return new Bid()
+                .setAmount(BigDecimal.TEN)
+                .setCreatedOn(LocalDate.now())
+                .setItem(item);
     }
 }
