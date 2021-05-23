@@ -6,6 +6,8 @@ import lombok.experimental.Accessors;
 import lombok.experimental.FieldDefaults;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "USERS")
@@ -24,4 +26,7 @@ public class User {
 
     @ManyToOne(fetch = FetchType.LAZY)
     BillingDetails billingDetails;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    List<Bid> bids = new ArrayList<>();
 }

@@ -35,4 +35,8 @@ public class Bid {
     @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
     Item item;
+
+    @ToString.Exclude
+    @ManyToOne(fetch = FetchType.LAZY)
+    User user;
 }
