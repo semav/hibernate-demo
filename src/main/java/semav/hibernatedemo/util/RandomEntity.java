@@ -6,6 +6,9 @@ import semav.hibernatedemo.entiry.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @UtilityClass
 public class RandomEntity {
@@ -37,5 +40,15 @@ public class RandomEntity {
                 .setAmount(BigDecimal.TEN)
                 .setCreatedOn(LocalDate.now())
                 .setItem(item);
+    }
+
+    public static List<Bid> getBids(Item item, int amount) {
+        return IntStream
+                .rangeClosed(0, amount)
+                .mapToObj(i -> new Bid()
+                        .setAmount(BigDecimal.valueOf(i))
+                        .setCreatedOn(LocalDate.now())
+                        .setItem(item))
+                .collect(Collectors.toList());
     }
 }

@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.experimental.Accessors;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.CollectionId;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -47,5 +49,6 @@ public class Item {
 
     // CascadeType.PERSIST is used to avoid persisting of each bid
     @OneToMany(mappedBy = "item", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @Fetch(FetchMode.SUBSELECT)
     List<Bid> bids = new ArrayList<>();
 }
